@@ -4,11 +4,13 @@ export type User = {
   passwordHash: string;
   createdAt: Date;
   updatedAt: Date;
+  name?: string;
 };
 
 export type UserDTO = {
   email: string;
-  passwordHash: string;
+  password: string;
   createdAt?: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
+  name?: string;
 }
