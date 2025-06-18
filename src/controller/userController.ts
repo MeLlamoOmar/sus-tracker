@@ -8,7 +8,7 @@ let users: User[] = [];
 
 // Crear usuario
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, passwordHash: password }: UserDTO = req.body;
+  const { name, email, password }: UserDTO = req.body;
   if (!password || !email) {
     res.status(400).json({ message: 'Nombre y email son requeridos' });
     return;
