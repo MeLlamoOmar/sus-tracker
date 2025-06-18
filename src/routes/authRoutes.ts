@@ -25,14 +25,12 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   try {
-    const hashedPassword = await UserService.hashPassword(password);
-    const newUser = await UserService.createUser({name, email, password: hashedPassword});
+    const newUser = await UserService.createUser({name, email, password});
     if (!newUser) {
       res.status(500).json({ message: 'Error al crear el usuario' });
       return;
     }
     users.push(newUser);
-    console.log(newUser.passwordHash)
     res.status(201).json({ message: 'Usuario registrado', status: 'ok' });
     } catch(error) {
       console.error('Error en registro:', error);
@@ -56,7 +54,6 @@ router.post('/login', async (req: Request, res: Response) => {
     return;
   }
 
-  console.log(user.passwordHash);
   const isPasswordValid = await UserService.verifyPassword(password, user.passwordHash);
   if (!isPasswordValid) {
     res.status(401).json({ message: 'Contraseña incorrecta' });
@@ -82,7 +79,7 @@ router.post('/login', async (req: Request, res: Response) => {
 // Logout de usuario
 router.post('/logout', (req: Request, res: Response) => {
   // Lógica de logout aquí
-  res.json({ message: 'Usuario desconectado' });
+  res.json({ message: 'Usuario desconectado'});
 });
 
 export default router;
