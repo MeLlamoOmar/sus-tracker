@@ -12,7 +12,7 @@ if (!TURSO_AUTH_TOKEN) {
 
 export default defineConfig({
   out: './drizzle',
-  schema: './src/db/schema/schema.ts',
+  schema: './src/db/schemas/schema.ts',
   dialect: 'turso',
   dbCredentials: {
     url: TURSO_DATABASE_URL,
