@@ -1,7 +1,10 @@
 import { Router } from 'express'
 import { createSubscription, deleteSubscription, getSubscriptions, getSubscriptionsById, updateSubscription } from '@/controller/subscriptionController.js'
+import { authValidator } from '@/lib/middleware/authValidator.js'
 
 const router = Router()
+
+router.use(authValidator)
 
 router.get('/', getSubscriptions)
 router.get('/:id', getSubscriptionsById)
