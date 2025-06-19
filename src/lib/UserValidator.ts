@@ -1,6 +1,8 @@
-import type { User, UserDTO } from '@/model/User.js';
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto';
+
+import type { User, UserDTO } from '@/model/User.js';
+import { users as userSchema } from '@/db/schemas/schema.js';
 
 export class UserService {
   static validatePassword(password: string) {
@@ -28,7 +30,7 @@ export class UserService {
     return bcrypt.hash(password.trim(), salt);
   }
 
-   static async createUser ({email, password, name}: UserDTO): Promise<User | undefined> {
+   static async createUser ({email, password, name}: UserDTO): Promise<typeof userSchema.$inferInsert | undefined> {
     // Validación de email y contraseña
     UserService.validateEmail(email);
     UserService.validatePassword(password);
@@ -36,12 +38,12 @@ export class UserService {
     // Crear el usuario
     try {
       const hashedPassword = await UserService.hashPassword(password);
-      const newUser: User = {
+      const newUser: typeof userSchema.$inferInsert = {
         id: randomUUID(),
         email,
-        passwordHash: hashedPassword,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        password: hashedPassword,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
         name
       };
       return newUser;

@@ -1,8 +1,13 @@
-import { UserService } from '@/lib/UserValidator.js';
-import type { User, UserDTO } from '@/model/User.js';
 import { Router, type Request, type Response } from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import { eq } from 'drizzle-orm';
+
+import { UserService } from '@/lib/UserValidator.js';
+import type { User, UserDTO } from '@/model/User.js';
+import db from '@/db/db.js';
+import { users as userSchema } from '@/db/schemas/schema.js';
+import { randomUUID } from 'crypto';
+
 
 const router = Router();
 
@@ -18,7 +23,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   // Verificar si el email ya existe
-  const existingUser = users.find(u => u.email === email);
+  const existingUser = await db.select().from(userSchema).where(eq(userSchema.email, email)).then(rows => rows[0]);
   if (existingUser) {
     res.status(400).json({ message: 'El email ya está en uso' });
     return;
@@ -30,7 +35,15 @@ router.post('/register', async (req: Request, res: Response) => {
       res.status(500).json({ message: 'Error al crear el usuario' });
       return;
     }
-    users.push(newUser);
+    await db.insert(userSchema).values({
+      id: newUser.id,
+      email: newUser.email,
+      password: newUser.password,
+      createdAt: newUser.createdAt,
+      updatedAt: newUser.updatedAt,
+      name: newUser.name
+    })
+
     res.status(201).json({ message: 'Usuario registrado', status: 'ok' });
     } catch(error) {
       console.error('Error en registro:', error);
@@ -48,7 +61,7 @@ router.post('/login', async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Email y contraseña son requeridos' });
     return;
   }
-  const user = users.find(u => u.email === email);
+  const user = await db.select().from(userSchema).where(eq(userSchema.email, email)).then(rows => rows[0]) as User | undefined;
   if (!user) {
     res.status(401).json({ message: 'Usuario no encontrado o contraseña incorrecta' });
     return;
