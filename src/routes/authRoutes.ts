@@ -61,13 +61,13 @@ router.post('/login', async (req: Request, res: Response) => {
     res.status(400).json({ message: 'Email y contraseña son requeridos' });
     return;
   }
-  const user = await db.select().from(userSchema).where(eq(userSchema.email, email)).then(rows => rows[0]) as User | undefined;
+  const user = await db.select().from(userSchema).where(eq(userSchema.email, email)).then(rows => rows[0]);
   if (!user) {
     res.status(401).json({ message: 'Usuario no encontrado o contraseña incorrecta' });
     return;
   }
 
-  const isPasswordValid = await UserService.verifyPassword(password, user.passwordHash);
+  const isPasswordValid = await UserService.verifyPassword(password, user.password);
   if (!isPasswordValid) {
     res.status(401).json({ message: 'Contraseña incorrecta' });
     return;
@@ -91,8 +91,13 @@ router.post('/login', async (req: Request, res: Response) => {
 
 // Logout de usuario
 router.post('/logout', (req: Request, res: Response) => {
-  // Lógica de logout aquí
-  res.json({ message: 'Usuario desconectado'});
+  // Eliminar cookie de sesión
+  res.clearCookie('access_token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Solo eliminar cookies seguras en producción
+    sameSite: 'lax', // Evitar CSRF
+  });
+  res.status(200).json({ message: 'Usuario desconectado' });
 });
 
 export default router;
