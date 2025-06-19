@@ -26,7 +26,6 @@ export const getSubscriptionsById = async (req: Request, res: Response) => {
 
   try {
     const subscription = await db.select().from(subscriptions).where(and(
-      eq(subscriptions.isActive, 1),
       eq(subscriptions.userId, req.user.id), // Assuming req.user.id contains the authenticated user's ID
       eq(subscriptions.id, id!) // Filter by subscription ID
     ));
@@ -86,25 +85,24 @@ export const updateSubscription = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, price, currency, billingCycle, isActive }: SubscriptionDTO = req.body;
 
-
   try {
     // Simulate finding the subscription to update
-    const subscriptionToUpdate = await db.select().from(subscriptions).where(eq(subscriptions.id, id!));
+    const subscriptionToUpdate = await db.select().from(subscriptions).where(eq(subscriptions.id, id!)).then((row) => row[0])
 
-    if (!subscriptionToUpdate || subscriptionToUpdate.length === 0) {
+    if (!subscriptionToUpdate) {
       res.status(404).json({ message: 'Subscription not found' });
       return;
     }
 
     // Replace the old subscription with the updated one
     const updatedSubscription = await db.update(subscriptions).set({
-      name,
-      price,
-      currency,
-      billingCycle,
-      isActive: isActive ? 1 : 0, // Convert boolean to integer (1 for active, 0 for inactive)
+      name: name ?? subscriptionToUpdate.name,
+      price: price ?? subscriptionToUpdate.price,
+      currency: currency ?? subscriptionToUpdate.currency,
+      billingCycle: billingCycle ?? subscriptionToUpdate.billingCycle,
+      isActive: isActive !== undefined ? (isActive ? 1 : 0) : subscriptionToUpdate.isActive,
       updatedAt: Date.now() // Update the timestamp
-    }).returning().where(eq(subscriptions.id, id!));
+    }).returning().where(and(eq(subscriptions.id, id!), eq(subscriptions.userId, req.user.id))).then((row) => row[0]);
 
     res.status(200).json(updatedSubscription);
   } catch (error) {
