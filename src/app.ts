@@ -1,6 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
+import cors from 'cors'
 
 import subscriptionRouter from '@/routes/subscriptionRoutes.js'
 // import userRouter from '@/routes/userRoutes.js'
@@ -11,13 +12,19 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan('dev'))
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  credentials: true,
+}))
 
 app.use('/api/subs', subscriptionRouter)
 // app.use("/api/users", userRouter)
 app.use('/api/auth', authRouter)
 
 app.get('/', (req, res) => {
-  res.send('Hello, World!')
+  res.json({
+    message: 'Welcome to the Subscription API',
+    status: 'OK',})
 })
 
 export default app

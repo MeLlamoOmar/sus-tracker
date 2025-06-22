@@ -56,6 +56,7 @@ router.post('/register', async (req: Request, res: Response) => {
 // Login de usuario
 router.post('/login', async (req: Request, res: Response) => {
   // Lógica de login aquí
+  console.log(req.body)
   const { email, password }: {email: string, password: string} = req.body;
   if (!email || !password) {
     res.status(400).json({ message: 'Email y contraseña son requeridos' });
@@ -81,7 +82,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
   // Enviar token como cookie
   res.cookie('access_token', token, {
-    httpOnly: true,
+    httpOnly: process.env.NODE_ENV !== 'development', // Habilitar httpOnly en producción
     secure: process.env.NODE_ENV === 'production', // Solo enviar cookies seguras en producción
     sameSite: 'lax', // Evitar CSRF
   })
