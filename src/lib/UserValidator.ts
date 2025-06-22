@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto';
 
-import type { User, UserDTO } from '@/model/User.js';
-import { users as userSchema } from '@/db/schemas/schema.js';
+import type { User, UserDTO } from './../model/User.js';
+import { users as userSchema } from './../db/schemas/schema.js';
 
 export class UserService {
   static validatePassword(password: string) {

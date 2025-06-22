@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import type { Subscription, SubscriptionDTO } from "@/model/Subscription.js";
+import type { Subscription, SubscriptionDTO } from "./../model/Subscription.js";
 import { randomUUID } from "crypto";
 import { eq, and } from "drizzle-orm";
 
-import db from "@/db/db.js";
-import { subscriptions } from "@/db/schemas/schema.js";
+import db from "./../db/db.js";
+import { subscriptions } from "./../db/schemas/schema.js";
 
 
 export const getSubscriptions = async (req: Request, res: Response) => {

@@ -22,16 +22,17 @@
 
 
     /* If NOT transpiling with TypeScript: */
-    "noEmit": true,
+    // "noEmit": true,
 
 
     /* If your code doesn't run in the DOM: */
     "lib": ["es2022"],
 
-    "paths": {
-      "@/*": ["./src/*"],
-      "@test/*": ["./test/*"]
-    },
     "baseUrl": ".",
-  }
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

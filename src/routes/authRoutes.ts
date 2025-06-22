@@ -2,11 +2,11 @@ import { Router, type Request, type Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { eq } from 'drizzle-orm';
 
-import { UserService } from '@/lib/UserValidator.js';
-import type { User, UserDTO } from '@/model/User.js';
-import db from '@/db/db.js';
-import { users as userSchema } from '@/db/schemas/schema.js';
-import { randomUUID } from 'crypto';
+import { UserService } from './../lib/UserValidator.js';
+import type { User, UserDTO } from './../model/User.js';
+import db from './../db/db.js';
+import { users as userSchema } from './../db/schemas/schema.js';
+// import { randomUUID } from 'crypto';
 
 
 const router = Router();

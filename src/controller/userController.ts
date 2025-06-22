@@ -1,7 +1,7 @@
-import type { User, UserDTO } from '@/model/User.js';
+import type { User, UserDTO } from './../model/User.js';
 import { randomUUID } from 'crypto';
 import type { Request, Response } from "express";
-import { UserService } from '@/lib/UserValidator.js';
+import { UserService } from './../lib/UserValidator.js';
 
 // Simulación de base de datos en memoria
 let users: User[] = [];

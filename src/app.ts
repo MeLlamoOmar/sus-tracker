@@ -3,9 +3,9 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import cors from 'cors'
 
-import subscriptionRouter from '@/routes/subscriptionRoutes.js'
+import subscriptionRouter from './routes/subscriptionRoutes.js'
 // import userRouter from '@/routes/userRoutes.js'
-import authRouter from '@/routes/authRoutes.js'
+import authRouter from './routes/authRoutes.js'
 
 const app = express()
 
