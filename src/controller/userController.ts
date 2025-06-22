@@ -31,8 +31,8 @@ export const createUser = async (req: Request, res: Response) => {
       id: randomUUID(),
       email,
       passwordHash: hashedPassword,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
       name
     };
     users.push(newUser);
@@ -73,7 +73,7 @@ export const updateUser = (req: Request, res: Response) => {
     res.status(400).json({ message: 'El nombre debe tener al menos 3 caracteres' });
     return;
   }
-  users[userIndex] = {...user, name, email, updatedAt: new Date() };
+  users[userIndex] = {...user, name, email, updatedAt: Date.now() };
   res.json(user);
 };
 
