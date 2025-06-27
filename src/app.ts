@@ -11,7 +11,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(morgan('dev'))
+app.use(morgan('common'))
 app.use(cors())
 
 app.use('/api/subs', subscriptionRouter)
