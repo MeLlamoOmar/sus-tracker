@@ -2,6 +2,11 @@ import type { User, UserDTO } from './../model/User.js';
 import { randomUUID } from 'crypto';
 import type { Request, Response } from "express";
 import { UserService } from './../lib/UserValidator.js';
+import jwt from 'jsonwebtoken';
+
+import db from '@/db/db.js';
+import { users as UserModel } from '@/db/schemas/schema.js';
+import { eq } from 'drizzle-orm';
 
 // Simulación de base de datos en memoria
 let users: User[] = [];
@@ -50,7 +55,7 @@ export const getUsers = (req: Request, res: Response) => {
 
 // Obtener usuario por ID
 export const getUserById = (req: Request, res: Response) => {
-  const user = users.find(user => user.id === req.params.id);
+  const user = db.select().from(UserModel).where(eq(UserModel.id, req.params.id));
   if (!user) {
     res.status(404).json({ message: 'Usuario no encontrado' });
     return;

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { Subscription, SubscriptionDTO } from "./../model/Subscription.js";
+import type { SubscriptionDTO } from "./../model/Subscription.js";
 import { randomUUID } from "crypto";
 import { eq, and } from "drizzle-orm";
 

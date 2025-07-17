@@ -18,7 +18,7 @@ app.use('/api/subs', subscriptionRouter)
 // app.use("/api/users", userRouter)
 app.use('/api/auth', authRouter)
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.json({
     message: 'Welcome to the Subscription API',
     status: 'OK',})
