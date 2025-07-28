@@ -112,7 +112,7 @@ export const getLogedUser = async (req: Request, res: Response) => {
       email: user.email,
     } });
   } catch (error) {
-    console.error('Error al obtener usuario:', error);
+    // console.error('Error al obtener usuario:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 }

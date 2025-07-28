@@ -55,7 +55,8 @@ export const getUsers = (req: Request, res: Response) => {
 
 // Obtener usuario por ID
 export const getUserById = (req: Request, res: Response) => {
-  const user = db.select().from(UserModel).where(eq(UserModel.id, req.params.id));
+  // const user = db.select().from(UserModel).where(eq(UserModel.id, req.params.id));
+  const user = users.find(u => u.id === req.params.id);
   if (!user) {
     res.status(404).json({ message: 'Usuario no encontrado' });
     return;
