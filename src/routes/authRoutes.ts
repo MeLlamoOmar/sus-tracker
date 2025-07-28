@@ -1,5 +1,5 @@
 import { Router} from 'express';
-import { getLogedUser, loginUser, logoutUser, registerUser } from '@/controller/authController.js';
+import { getLogedUser, loginUser, logoutUser, registerUser } from './../controller/authController.js';
 // import { randomUUID } from 'crypto';
 
 
