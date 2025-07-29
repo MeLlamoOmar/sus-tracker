@@ -107,10 +107,10 @@ export const getLogedUser = async (req: Request, res: Response) => {
       res.status(404).json({ message: 'Usuario no encontrado' });
       return;
     }
-    res.status(200).json({ user: {
+    res.status(200).json({
       name: user.name,
-      email: user.email,
-    } });
+      email: user.email
+    } as User);
   } catch (error) {
     // console.error('Error al obtener usuario:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
